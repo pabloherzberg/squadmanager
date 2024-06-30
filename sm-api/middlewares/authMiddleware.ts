@@ -1,12 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-
-interface CustumRequest extends Request {
-  user?: jwt.JwtPayload | string;
-}
+import { CustomMiddlewareBodyRequest } from "../types";
 
 export const authenticateToken = (
-  req: CustumRequest,
+  req: CustomMiddlewareBodyRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -17,7 +14,7 @@ export const authenticateToken = (
 
   jwt.verify(token, process.env.JWT_SECRET || "secret", (err, user) => {
     if (err) return res.status(403).json({ error: "Token inválido" });
-    req.user = user;
+    req.user = user as jwt.JwtPayload;
     next();
   });
 };

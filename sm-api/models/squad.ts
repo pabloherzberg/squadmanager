@@ -1,59 +1,57 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "./index";
-import { User } from "./user";
 
 interface SquadAttributes {
-  SquadID: number;
-  Name: string;
-  Description: string;
-  CreatedBy: number;
+  squadid: number;
+  name: string;
+  description: string;
+  createdby: number;
   createdat?: Date;
 }
 
 interface SquadCreationAttributes
-  extends Optional<SquadAttributes, "SquadID"> {}
+  extends Optional<SquadAttributes, "squadid" | "createdat"> {}
 
 export class Squad
   extends Model<SquadAttributes, SquadCreationAttributes>
   implements SquadAttributes
 {
-  public SquadID!: number;
-  public Name!: string;
-  public Description!: string;
-  public CreatedBy!: number;
+  public squadid!: number;
+  public name!: string;
+  public description!: string;
+  public createdby!: number;
   public createdat?: Date;
 }
 
 Squad.init(
   {
-    SquadID: {
+    squadid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    Name: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Description: {
+    description: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
-    CreatedBy: {
+    createdby: {
       type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: "UserID",
-      },
+      allowNull: false,
     },
     createdat: {
       type: DataTypes.DATE,
+      field: "createdat",
       defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
+    timestamps: false,
+    underscored: true,
     tableName: "squads",
   }
 );
-
-Squad.belongsTo(User, { foreignKey: "CreatedBy" });
