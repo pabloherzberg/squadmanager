@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user";
+import { RoleType } from "../types";
 
 /**
  * @swagger
@@ -106,6 +107,48 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
     res.json({ token });
+  } catch (error) {
+    res.status(400).json({ error: (error as any).message });
+  }
+};
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Listar todos os usuários
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de usuários
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   userid:
+ *                     type: integer
+ *                   username:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   role:
+ *                     type: string
+ *                   createdat:
+ *                     type: string
+ *                     format: date-time
+ *       400:
+ *         description: Erro na requisição
+ */
+export const listUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["userid", "username", "email", "role", "createdat"],
+      where: { role: RoleType.Employee },
+    });
+    res.json(users);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });
   }
