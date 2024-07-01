@@ -18,3 +18,23 @@ export interface AuthStateInterface {
   status: LoginStatusEnum;
   error: string | null | undefined;
 }
+
+export interface Squad {
+  id: number;
+  name: string;
+  members: Array<any>;
+}
+
+export interface SquadsState {
+  squads: Squad[];
+  status: LoginStatusEnum;
+  error: string | null | undefined;
+}
+
+export interface EmployeeInterface {
+  userid: number;
+  username: string;
+  email: string;
+  role: string;
+  createdat: string;
+}

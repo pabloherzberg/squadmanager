@@ -1,15 +1,47 @@
 import PrivateRoute from '@/components/PrivateRoute';
-import { useAppSelector } from '@/store/hooks';
+import { fetchEmployees } from '@/store/employeeSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchSquads } from '@/store/squadSlice';
+import { EmployeeInterface, Squad } from '@/types';
+import { useEffect } from 'react';
 
-const Home = () => {
-  const user = useAppSelector((state) => state.auth.user);
+const Squads = () => {
+  const dispatch = useAppDispatch();
+  const employees: EmployeeInterface[] = useAppSelector(
+    (state) => state.employee.employees
+  );
+  const squads: Squad[] = useAppSelector((state) => state.squad.squads);
+  const status = useAppSelector((state) => state.squad.status);
+
+  useEffect(() => {
+    dispatch(fetchSquads());
+    dispatch(fetchEmployees());
+  }, [dispatch]);
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed') {
+    return <div>Failed to load squads</div>;
+  }
 
   return (
     <div>
-      <h1>Welcome {user?.username}</h1>
-      <p>Are you {user?.role}?</p>
+      <h1>Squads</h1>
+      <ul>
+        {squads.map((squad) => (
+          <li key={squad.id}>{squad.name}</li>
+        ))}
+      </ul>
+      <h1>Employees</h1>
+      <ul>
+        {employees.map((employee) => (
+          <li key={employee.userid}>{employee.username}</li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default PrivateRoute(Home);
+export default PrivateRoute(Squads);
