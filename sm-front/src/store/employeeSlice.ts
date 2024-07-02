@@ -1,4 +1,4 @@
-import { LoginStatusEnum } from '@/types';
+import { LoginStatusEnum } from '@/utils/types/user';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from './api';
 

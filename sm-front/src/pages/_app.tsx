@@ -1,6 +1,10 @@
+import { DefaultLayout } from '@/components/Layout';
+import ToastContextProvider from '@/providers/ToastProvider';
 import store from '@/store';
 import { loadUserFromToken, logout } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/hooks';
+import theme from '@/styles/theme';
+import { ThemeProvider } from '@mui/material/styles';
 import jwt from 'jsonwebtoken';
 import { ComponentType, useEffect } from 'react';
 import { Provider } from 'react-redux';
@@ -42,10 +46,22 @@ function App({
   Component: ComponentType<any>;
   pageProps: any;
 }) {
+  useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement!.removeChild(jssStyles);
+    }
+  }, []);
   return (
     <Provider store={store}>
-      <LoadUser />
-      <Component {...pageProps} />
+      <DefaultLayout>
+        <ThemeProvider theme={theme}>
+          <ToastContextProvider>
+            <LoadUser />
+            <Component {...pageProps} />
+          </ToastContextProvider>
+        </ThemeProvider>
+      </DefaultLayout>
     </Provider>
   );
 }

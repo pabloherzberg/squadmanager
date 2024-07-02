@@ -1,24 +1,24 @@
-// src/components/PrivateRoute.tsx
 import { useAppSelector } from '@/store/hooks';
-import { LoginStatusEnum } from '@/types';
+import { LoginStatusEnum } from '@/utils/types/user';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 const PrivateRoute = (WrappedComponent: React.ComponentType) => {
   const WithAuth = (props: any) => {
     const router = useRouter();
+    const token = useAppSelector((state) => state.auth.token);
     const status = useAppSelector((state) => state.auth.status);
 
-    useEffect(() => {
-      if (
-        status === LoginStatusEnum.idle ||
-        status === LoginStatusEnum.failed
-      ) {
-        router.push('/signin');
-      }
-    }, [status, router]);
+    console.log({ status });
+    console.log('PrivateRoute', token);
 
-    if (status === LoginStatusEnum.loading || status === LoginStatusEnum.idle) {
+    useEffect(() => {
+      if (!token) {
+        router.push('/sign-in');
+      }
+    }, [router, token]);
+
+    if (status === LoginStatusEnum.loading) {
       return <div>Loading...</div>;
     }
 

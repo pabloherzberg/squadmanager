@@ -1,8 +1,8 @@
-import PrivateRoute from '@/components/PrivateRoute';
+import PrivateRoute from '@/providers/Routes/PrivateRoute';
 import { fetchEmployees } from '@/store/employeeSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchSquads } from '@/store/squadSlice';
-import { EmployeeInterface, Squad } from '@/types';
+import { EmployeeInterface, Squad } from '@/utils/types/user';
 import { useEffect } from 'react';
 
 const Squads = () => {
@@ -12,6 +12,8 @@ const Squads = () => {
   );
   const squads: Squad[] = useAppSelector((state) => state.squad.squads);
   const status = useAppSelector((state) => state.squad.status);
+
+  console.log({ status });
 
   useEffect(() => {
     dispatch(fetchSquads());

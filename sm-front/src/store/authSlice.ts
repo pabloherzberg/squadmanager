@@ -1,4 +1,4 @@
-import { LoginStatusEnum, UserInterface } from '@/types';
+import { LoginStatusEnum, UserInterface } from '@/utils/types/user';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import jwt from 'jsonwebtoken';
 import api from './api';
@@ -6,6 +6,8 @@ import api from './api';
 type CredentialsProps = {
   Email: string;
   Password: string;
+  Role?: string;
+  Username?: string;
 };
 
 export const login = createAsyncThunk(
@@ -62,6 +64,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = LoginStatusEnum.succeeded;
         state.user = action.payload.user;
+        state.token = action.payload.token;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = LoginStatusEnum.failed;

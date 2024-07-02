@@ -1,0 +1,13 @@
+<svg width="400" height="150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Texto "SQUAD" -->
+  <text x="10" y="40" font-family="Verdana" font-size="50" fill="#233140">SQUAD</text>
+  
+  <!-- Texto "MANAGER" -->
+  <text x="10" y="80" font-family="Verdana" font-size="35" fill="#233140">MANAGER</text>
+  
+  <!-- Ícone de engrenagem -->
+  <circle cx="300" cy="50" r="40" stroke="#233140" stroke-width="5" fill="#AEDFF7" />
+  <circle cx="300" cy="50" r="20" stroke="#233140" stroke-width="5" fill="#AEDFF7" />
+  <path d="M280 20 L320 20 L330 30 L350 30 L360 50 L350 70 L330 70 L320 80 L280 80 L270 70 L250 70 L240 50 L250 30 L270 30 Z" fill="none" stroke="#233140" stroke-width="5" />
+  
+</svg>
