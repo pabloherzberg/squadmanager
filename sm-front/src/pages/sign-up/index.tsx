@@ -4,12 +4,11 @@ import { commonColors } from '@/../tailwind.config';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input/Input';
 import { H2, SmallText } from '@/components/Typography';
-import WithAuthRedirect from '@/providers/Routes/WithAuthRedirect';
+import { useCreateUser } from '@/hooks/auth';
 import { useToast } from '@/providers/ToastProvider';
-import { register } from '@/store/authSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/store/useRedux';
 import { validateEmail, validatePassword } from '@/utils/handlers';
-import { LoginStatusEnum } from '@/utils/types/user';
+import { LoginStatusEnum } from '@/utils/types/index';
 import UserIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import {
@@ -31,9 +30,8 @@ interface LoginData {
   repassword: string;
 }
 
-const LoginPage = () => {
+const SignupPage = () => {
   const selector = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
   const [inputValues, setInputValues] = useState<LoginData>({
     email: '',
     username: '',
@@ -44,6 +42,7 @@ const LoginPage = () => {
 
   const toast = useToast();
   const router = useRouter();
+  const { mutateAsync } = useCreateUser();
 
   useEffect(() => {
     if (selector.status === LoginStatusEnum.succeeded) {
@@ -81,14 +80,12 @@ const LoginPage = () => {
       return;
     }
 
-    dispatch(
-      register({
-        Email: inputValues.email,
-        Password: inputValues.password,
-        Username: inputValues.username,
-        Role: inputValues.role,
-      })
-    );
+    mutateAsync({
+      Email: inputValues.email,
+      Password: inputValues.password,
+      Username: inputValues.username,
+      Role: inputValues.role,
+    });
   };
 
   return (
@@ -209,4 +206,4 @@ const LoginPage = () => {
   );
 };
 
-export default WithAuthRedirect(LoginPage);
+export default SignupPage;

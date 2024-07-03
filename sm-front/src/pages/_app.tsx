@@ -1,43 +1,17 @@
 import { DefaultLayout } from '@/components/Layout';
+import queryClient from '@/providers/QueryClient';
 import ToastContextProvider from '@/providers/ToastProvider';
 import store from '@/store';
-import { loadUserFromToken, logout } from '@/store/authSlice';
-import { useAppDispatch } from '@/store/hooks';
+
+import LoadUser from '@/providers/LoadUser';
+import { persistor } from '@/store/index';
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@mui/material/styles';
-import jwt from 'jsonwebtoken';
 import { ComponentType, useEffect } from 'react';
+import { QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import '../styles/globals.css';
-
-const LoadUser = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const decodedToken = jwt.decode(token) as {
-          id: number;
-          username: string;
-          email: string;
-          role: string;
-          createdAt: string;
-          exp: number;
-        };
-
-        const currentTime = Date.now() / 1000;
-        if (decodedToken.exp < currentTime) {
-          localStorage.removeItem('token');
-          dispatch(logout());
-        } else {
-          dispatch(loadUserFromToken({ user: decodedToken, token }));
-        }
-      }
-    }
-  }, [dispatch]);
-
-  return null;
-};
 
 function App({
   Component,
@@ -52,17 +26,22 @@ function App({
       jssStyles.parentElement!.removeChild(jssStyles);
     }
   }, []);
+
   return (
-    <Provider store={store}>
-      <DefaultLayout>
-        <ThemeProvider theme={theme}>
-          <ToastContextProvider>
-            <LoadUser />
-            <Component {...pageProps} />
-          </ToastContextProvider>
-        </ThemeProvider>
-      </DefaultLayout>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <DefaultLayout>
+            <ThemeProvider theme={theme}>
+              <ToastContextProvider>
+                <LoadUser />
+                <Component {...pageProps} />
+              </ToastContextProvider>
+            </ThemeProvider>
+          </DefaultLayout>
+        </PersistGate>
+      </Provider>
+    </QueryClientProvider>
   );
 }
 

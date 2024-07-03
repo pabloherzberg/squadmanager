@@ -1,6 +1,6 @@
-import { LoginStatusEnum } from '@/utils/types/user';
+import { LoginStatusEnum } from '@/utils/types/index';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from './api';
+import api from '../hooks/api';
 
 const initialState = {
   employees: [],

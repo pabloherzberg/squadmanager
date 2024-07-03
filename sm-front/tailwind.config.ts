@@ -7,31 +7,31 @@ export const commonColors = {
     200: '#FAFAFA',
   },
   primary: {
-    DEFAULT: '#90CAF9', // Azul pastel um pouco mais forte
+    DEFAULT: '#90CAF9',
   },
   secondary: {
-    DEFAULT: '#64B5F6', // Azul claro pastel um pouco mais forte
-    200: '#BBDEFB', // Azul muito claro pastel
+    DEFAULT: '#64B5F6',
+    200: '#BBDEFB',
   },
   gray: {
-    DEFAULT: '#B0BEC5', // Cinza pastel
-    200: '#CFD8DC', // Cinza claro pastel
-    300: '#ECEFF1', // Cinza muito claro pastel
-    400: '#F5F5F5', // Cinza muito muito claro pastel
+    DEFAULT: '#B0BEC5',
+    200: '#CFD8DC',
+    300: '#ECEFF1',
+    400: '#F5F5F5',
     disabled: '#CFD8DC',
     border: '#CFD8DC',
   },
   blue: {
-    DEFAULT: '#90CAF9', // Azul pastel um pouco mais forte
-    200: '#BBDEFB', // Azul muito claro pastel
+    DEFAULT: '#90CAF9',
+    200: '#BBDEFB',
   },
   red: {
-    DEFAULT: '#FFCDD2', // Vermelho pastel
-    200: '#FFE5E7', // Vermelho muito claro pastel
+    DEFAULT: '#FFCDD2',
+    200: '#FFE5E7',
     lightRed: '#FF8A80',
   },
-  green: '#C8E6C9', // Verde pastel
-  lightGreen: '#E8F5E9', // Verde muito claro pastel
+  green: '#C8E6C9',
+  lightGreen: '#E8F5E9',
 };
 
 const config: Config = {

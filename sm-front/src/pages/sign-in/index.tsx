@@ -4,10 +4,11 @@ import { commonColors } from '@/../tailwind.config';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input/Input';
 import { H2 } from '@/components/Typography';
-import WithAuthRedirect from '@/providers/Routes/WithAuthRedirect';
-import { login } from '@/store/authSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { LoginStatusEnum } from '@/utils/types/user';
+import { useFetchAuth } from '@/hooks/auth/index';
+import { useToast } from '@/providers/ToastProvider';
+import { paths } from '@/store/paths';
+import { useAppSelector } from '@/store/useRedux';
+import { LoginStatusEnum } from '@/utils/types/index';
 import EmailIcon from '@mui/icons-material/Email';
 import { InputAdornment, Link } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -19,31 +20,42 @@ interface LoginData {
 }
 
 const LoginPage = () => {
-  const selector = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const { mutateAsync } = useFetchAuth();
   const [inputValues, setInputValues] = useState<LoginData>({
     email: '',
     password: '',
   });
-
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
-    if (selector.status === LoginStatusEnum.succeeded && selector.token) {
-      router.push('/');
-    } else if (selector.status === LoginStatusEnum.failed) {
+    if (auth.token) {
+      router.replace(
+        auth.user?.role === 'Gerente' ? paths.squads : paths.manager
+      );
     }
-  }, [selector.status, router]);
+  }, [router, auth.token, auth.status]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (inputValues.email === '' || inputValues.password === '') {
+      toast.error({ content: 'Preencha os campos' });
       return;
     }
 
-    dispatch(
-      login({ Email: inputValues.email, Password: inputValues.password })
-    );
+    try {
+      await mutateAsync({
+        Email: inputValues.email,
+        Password: inputValues.password,
+      });
+
+      if (auth.status === LoginStatusEnum.failed) {
+        toast.error({ content: 'E-mail ou senha inválidos' });
+      }
+    } catch (error) {
+      toast.error({ content: 'Erro ao fazer login' });
+    }
   };
 
   return (
@@ -91,7 +103,7 @@ const LoginPage = () => {
             />
 
             <Button
-              isLoading={selector.status === LoginStatusEnum.loading}
+              isLoading={auth.status === LoginStatusEnum.loading}
               className="font-bold"
               fullWidth
               type="submit"
@@ -106,4 +118,4 @@ const LoginPage = () => {
   );
 };
 
-export default WithAuthRedirect(LoginPage);
+export default LoginPage;

@@ -20,15 +20,24 @@ export interface AuthStateInterface {
 }
 
 export interface Squad {
-  id: number;
+  createdat: string;
+  createdby: string;
+  description: string;
   name: string;
-  members: Array<any>;
+  squadid: number;
 }
 
 export interface SquadsState {
   squads: Squad[];
   status: LoginStatusEnum;
   error: string | null | undefined;
+}
+
+export interface SquadMember {
+  squadmemberid: number;
+  squadid: number;
+  userid: number;
+  role: 'Gerente' | 'Funcionário';
 }
 
 export interface EmployeeInterface {

@@ -1,4 +1,6 @@
 import { commonColors } from '@/../tailwind.config';
+import { Pagination } from '@/components/Pagination';
+import { BodyText } from '@/components/Typography';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
@@ -13,9 +15,7 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import React from 'react';
-import { Pagination } from './Pagination';
 import { TableSkeleton } from './TableSkeleton';
-import { BodyText } from './Typography';
 export interface ITableProps<T> {
   data: T[];
   columns: {
