@@ -44,6 +44,7 @@ SquadMember.init(
   },
   {
     sequelize,
+    timestamps: false,
     tableName: "squadmembers",
   }
 );

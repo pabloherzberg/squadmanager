@@ -14,13 +14,13 @@ const router = Router();
 
 router.post("/create", authenticateToken, authorizeManager, createSquad);
 router.post(
-  "/:id/members",
+  "/members/add",
   authenticateToken,
   authorizeManager,
   addMemberToSquad
 );
 router.delete(
-  "/:id/members/:id",
+  "/members/remove",
   authenticateToken,
   authorizeManager,
   removeMemberFromSquad

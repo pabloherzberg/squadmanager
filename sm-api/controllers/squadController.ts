@@ -2,6 +2,7 @@ import { Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { Squad } from "../models/squad";
 import { SquadMember } from "../models/squadMembers";
+import { User } from "../models/user";
 import { CustomMiddlewareBodyRequest, RoleType } from "../types";
 
 /**
@@ -78,9 +79,21 @@ export const getSquadById = async (
   res: Response
 ) => {
   try {
+    const returnData: any = {};
     const squad = await Squad.findByPk(req.params.id);
+    const squadMembers = await SquadMember.findAll({
+      where: { squadid: req.params.id },
+    });
+    if (squadMembers.length > 0) {
+      const users = await User.findAll({
+        where: { userid: squadMembers.map((member) => member.userid) },
+      });
+      returnData.users = users; // Assign users to the users property
+    }
+    returnData["squad"] = squad;
+    returnData["squadMembers"] = squadMembers;
     if (!squad) return res.status(404).json({ error: "Squad não encontrada" });
-    res.json(squad);
+    res.json(returnData);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });
   }
@@ -199,17 +212,10 @@ export const deleteSquad = async (
 
 /**
  * @swagger
- * /squad/:id/members:
+ * /squad/members/add:
  *   post:
  *     summary: Adicionar um membro ao squad
  *     tags: [Squads]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID do squad
  *     requestBody:
  *       required: true
  *       content:
@@ -217,8 +223,11 @@ export const deleteSquad = async (
  *           schema:
  *             type: object
  *             required:
+ *               - squadId
  *               - userId
  *             properties:
+ *               squadId:
+ *                 type: integer
  *               userId:
  *                 type: integer
  *     responses:
@@ -232,8 +241,15 @@ export const addMemberToSquad = async (
   res: Response
 ) => {
   try {
-    const { userId } = req.body;
-    const squadId = Number(req.params.id);
+    const { squadId, userId } = req.body;
+
+    if (isNaN(squadId)) {
+      return res.status(400).json({ error: "Invalid squad ID" });
+    }
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
 
     const squadMember = await SquadMember.create({
       squadid: squadId,
@@ -249,23 +265,24 @@ export const addMemberToSquad = async (
 
 /**
  * @swagger
- * /squad/{id}/members/{memberId}:
+ * /squad/members/remove:
  *   delete:
  *     summary: Remover um membro do squad
  *     tags: [Squads]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID do squad
- *       - in: path
- *         name: memberId
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID do membro do squad
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - squadId
+ *               - memberId
+ *             properties:
+ *               squadId:
+ *                 type: integer
+ *               memberId:
+ *                 type: integer
  *     responses:
  *       204:
  *         description: Membro removido com sucesso
@@ -279,7 +296,7 @@ export const removeMemberFromSquad = async (
   res: Response
 ) => {
   try {
-    const { id: squadId, memberId } = req.params;
+    const { squadId, memberId } = req.body;
 
     const squadMember = await SquadMember.findOne({
       where: { squadid: squadId, squadmemberid: memberId },
