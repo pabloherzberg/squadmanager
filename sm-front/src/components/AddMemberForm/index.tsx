@@ -1,6 +1,7 @@
 import { useAddSquadMember, useFetchUsers, useGetSquad } from '@/hooks/squad';
 import { useToast } from '@/providers/ToastProvider';
 import { useAppSelector } from '@/store/useRedux';
+import { UserRoleEnum } from '@/utils/types';
 import {
   Autocomplete,
   Box,
@@ -42,7 +43,7 @@ const AddMemberForm: React.FC = () => {
         Adicionar Membro
       </Typography>
       <Autocomplete
-        options={users.filter((user) => user.role !== 'Gerente')}
+        options={users.filter((user) => user.role !== UserRoleEnum.manager)}
         getOptionLabel={(option) => option.username}
         onChange={(event, newValue) => {
           if (newValue) {

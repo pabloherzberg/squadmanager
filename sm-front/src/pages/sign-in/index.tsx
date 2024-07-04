@@ -8,7 +8,7 @@ import { useFetchAuth } from '@/hooks/auth/index';
 import { useToast } from '@/providers/ToastProvider';
 import { paths } from '@/store/paths';
 import { useAppSelector } from '@/store/useRedux';
-import { QueryStatusEnum } from '@/utils/types/index';
+import { QueryStatusEnum, UserRoleEnum } from '@/utils/types/index';
 import EmailIcon from '@mui/icons-material/Email';
 import { InputAdornment, Link } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -32,7 +32,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (auth.token) {
       router.replace(
-        auth.user?.role === 'Gerente' ? paths.squads : paths.employee
+        auth.user?.role === UserRoleEnum.manager ? paths.squads : paths.employee
       );
     }
   }, [router, auth.token, auth.status]);

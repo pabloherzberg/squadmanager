@@ -3,7 +3,7 @@ import SquadCard from '@/components/SquadCard';
 import { useGetSquad } from '@/hooks/squad';
 import PrivateRoute from '@/providers/PrivateRoute';
 import { useAppSelector } from '@/store/useRedux';
-import { EmployeeInterface, SquadMember } from '@/utils/types';
+import { EmployeeInterface, SquadMember, UserRoleEnum } from '@/utils/types';
 import { Edit } from '@mui/icons-material';
 import {
   Box,
@@ -36,7 +36,7 @@ const SquadForm: React.FC = () => {
     <Box className="p-4">
       <Box className="flex justify-between items-center mb-6">
         <Typography variant="h3">Squad Details</Typography>
-        {userRole === 'Gerente' && (
+        {userRole === UserRoleEnum.manager && (
           <IconButton
             aria-label="edit squad"
             onClick={() => router.push(`/manager/squads/${id}/edit/form`)}

@@ -17,6 +17,7 @@ const PrivateRoute = (WrappedComponent: React.ComponentType) => {
     useEffect(() => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('token') || authSelector.token;
+        console.log('token', token);
         if (token) {
           const decodedToken = jwt.decode(token) as UserInterface & {
             exp: number;

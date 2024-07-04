@@ -8,7 +8,7 @@ import {
 } from '@/hooks/squad';
 import { useToast } from '@/providers/ToastProvider';
 import { useAppSelector } from '@/store/useRedux';
-import { EmployeeInterface } from '@/utils/types';
+import { EmployeeInterface, UserRoleEnum } from '@/utils/types';
 import { Delete } from '@mui/icons-material';
 import {
   Autocomplete,
@@ -177,7 +177,7 @@ const NewSquadForm: React.FC = () => {
       <Typography variant="h6" gutterBottom className="mt-6">
         Squad Members
       </Typography>
-      {userRole === 'Gerente' && (
+      {userRole === UserRoleEnum.manager && (
         <div className="mt-6">
           <form onSubmit={handleAddMember}>
             <Autocomplete

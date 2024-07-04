@@ -8,7 +8,7 @@ import { useCreateUser } from '@/hooks/auth';
 import { useToast } from '@/providers/ToastProvider';
 import { useAppSelector } from '@/store/useRedux';
 import { validateEmail, validatePassword } from '@/utils/handlers';
-import { QueryStatusEnum } from '@/utils/types/index';
+import { QueryStatusEnum, UserRoleEnum } from '@/utils/types/index';
 import UserIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import {
@@ -138,8 +138,12 @@ const SignupPage = () => {
                   })
                 }
               >
-                <MenuItem value="Gerente">Gerente</MenuItem>
-                <MenuItem value="Funcionário">Funcionário</MenuItem>
+                <MenuItem value={UserRoleEnum.manager}>
+                  {UserRoleEnum.manager}
+                </MenuItem>
+                <MenuItem value={UserRoleEnum.employee}>
+                  {UserRoleEnum.employee}
+                </MenuItem>
               </Select>
             </FormControl>
             <Input

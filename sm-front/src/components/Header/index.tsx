@@ -2,7 +2,7 @@ import { logout } from '@/store/authSlice';
 import { paths } from '@/store/paths';
 import { useAppDispatch, useAppSelector } from '@/store/useRedux';
 import Logo from '@/styles/assets/images/logo.svg';
-import { Work } from '@mui/icons-material/';
+import { UserRoleEnum } from '@/utils/types';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -23,19 +23,31 @@ import { useState } from 'react';
 
 export function Header() {
   const dispatch = useAppDispatch();
+  const home = usePathname();
   const selector = useAppSelector((state) => state.auth);
   const router = useRouter();
-
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const showNav = selector.token;
   const pathname = usePathname();
-  const navItems = [
+
+  const ManagerNavItems = [
     {
       label: 'Squads',
       link: paths.squads,
-      icon: <Work className="text-md" />,
     },
   ];
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const EmployeeNavItems = [
+    {
+      label: 'Tarefas',
+      link: paths.employee,
+    },
+  ];
+
+  const navItems =
+    selector.user?.role === UserRoleEnum.manager
+      ? ManagerNavItems
+      : EmployeeNavItems;
   return (
     <div>
       <header className="shadow-[0_2px_4px_0_rgb(0,0,0,0.2)] h-14 flex items-center">
@@ -54,7 +66,7 @@ export function Header() {
           )}
         </div>
       </header>
-      {selector.token && (
+      {showNav && (
         <div className="shadow-[0_2px_4px_0_rgb(0,0,0,0.2)] px-4 md:px-10 h-12">
           <div className="md:flex hidden h-full w-full">
             {navItems.map((tab, index) => (
@@ -103,7 +115,6 @@ export function Header() {
               {navItems.map((item) => (
                 <ListItem key={item.label} disablePadding>
                   <ListItemButton href={item.link} className="pr-8 gap-4">
-                    {item.icon}
                     <ListItemText primary={item.label} />
                   </ListItemButton>
                 </ListItem>

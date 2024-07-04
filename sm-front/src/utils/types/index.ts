@@ -33,11 +33,16 @@ export interface SquadsState {
   error: string | null | undefined;
 }
 
+export enum UserRoleEnum {
+  manager = 'Gerente',
+  employee = 'Funcionário',
+}
+
 export interface SquadMember {
   squadmemberid: number;
   squadid: number;
   userid: number;
-  role: 'Gerente' | 'Funcionário';
+  role: UserRoleEnum.manager | UserRoleEnum.employee;
 }
 
 export interface EmployeeInterface {
