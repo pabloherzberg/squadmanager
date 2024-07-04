@@ -1,10 +1,10 @@
-import { LoginStatusEnum, UserInterface } from '@/utils/types/index';
+import { QueryStatusEnum, UserInterface } from '@/utils/types/index';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type AuthState = {
   users: any[];
   user?: UserInterface;
-  status: LoginStatusEnum;
+  status: QueryStatusEnum;
   error?: string | null;
   token?: string;
 };
@@ -12,7 +12,7 @@ type AuthState = {
 const initialState: AuthState = {
   user: undefined,
   users: [],
-  status: LoginStatusEnum.idle,
+  status: QueryStatusEnum.idle,
   error: null,
   token: undefined,
 };
@@ -24,7 +24,7 @@ const authSlice = createSlice({
     logout(state) {
       state.user = undefined;
       state.token = undefined;
-      state.status = LoginStatusEnum.idle;
+      state.status = QueryStatusEnum.idle;
       state.error = null;
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
@@ -36,9 +36,9 @@ const authSlice = createSlice({
     ) {
       state.user = action.payload.user;
       state.token = action.payload.token;
-      state.status = LoginStatusEnum.succeeded;
+      state.status = QueryStatusEnum.succeeded;
     },
-    setAuthStatus(state, action: PayloadAction<LoginStatusEnum>) {
+    setAuthStatus(state, action: PayloadAction<QueryStatusEnum>) {
       state.status = action.payload;
     },
     setAuthError(state, action: PayloadAction<string | null>) {

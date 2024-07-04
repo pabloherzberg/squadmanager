@@ -8,7 +8,7 @@ import { useCreateUser } from '@/hooks/auth';
 import { useToast } from '@/providers/ToastProvider';
 import { useAppSelector } from '@/store/useRedux';
 import { validateEmail, validatePassword } from '@/utils/handlers';
-import { LoginStatusEnum } from '@/utils/types/index';
+import { QueryStatusEnum } from '@/utils/types/index';
 import UserIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import {
@@ -45,9 +45,9 @@ const SignupPage = () => {
   const { mutateAsync } = useCreateUser();
 
   useEffect(() => {
-    if (selector.status === LoginStatusEnum.succeeded) {
+    if (selector.status === QueryStatusEnum.succeeded) {
       router.push('/sign-in');
-    } else if (selector.status === LoginStatusEnum.failed) {
+    } else if (selector.status === QueryStatusEnum.failed) {
       toast.error({ content: 'E-mail ou senha inválidos' });
     }
   }, [selector.status, router]);
@@ -190,7 +190,7 @@ const SignupPage = () => {
             />
 
             <Button
-              isLoading={selector.status === LoginStatusEnum.loading}
+              isLoading={selector.status === QueryStatusEnum.loading}
               fullWidth
               type="submit"
             >

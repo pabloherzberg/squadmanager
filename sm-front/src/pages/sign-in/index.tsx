@@ -8,7 +8,7 @@ import { useFetchAuth } from '@/hooks/auth/index';
 import { useToast } from '@/providers/ToastProvider';
 import { paths } from '@/store/paths';
 import { useAppSelector } from '@/store/useRedux';
-import { LoginStatusEnum } from '@/utils/types/index';
+import { QueryStatusEnum } from '@/utils/types/index';
 import EmailIcon from '@mui/icons-material/Email';
 import { InputAdornment, Link } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -32,7 +32,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (auth.token) {
       router.replace(
-        auth.user?.role === 'Gerente' ? paths.squads : paths.manager
+        auth.user?.role === 'Gerente' ? paths.squads : paths.employee
       );
     }
   }, [router, auth.token, auth.status]);
@@ -50,7 +50,7 @@ const LoginPage = () => {
         Password: inputValues.password,
       });
 
-      if (auth.status === LoginStatusEnum.failed) {
+      if (auth.status === QueryStatusEnum.failed) {
         toast.error({ content: 'E-mail ou senha inválidos' });
       }
     } catch (error) {
@@ -103,7 +103,7 @@ const LoginPage = () => {
             />
 
             <Button
-              isLoading={auth.status === LoginStatusEnum.loading}
+              isLoading={auth.status === QueryStatusEnum.loading}
               className="font-bold"
               fullWidth
               type="submit"

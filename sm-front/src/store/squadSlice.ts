@@ -1,5 +1,5 @@
 import {
-  LoginStatusEnum,
+  QueryStatusEnum,
   Squad,
   SquadMember,
   UserInterface,
@@ -8,7 +8,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState: any = {
   squads: [],
-  status: LoginStatusEnum.idle,
+  status: QueryStatusEnum.idle,
   error: null,
   squad: null,
   squadMembers: [],
@@ -17,7 +17,7 @@ const initialState: any = {
 
 interface SquadState {
   squads?: Squad[];
-  status?: LoginStatusEnum;
+  status?: QueryStatusEnum;
   error?: string | null | undefined;
   squad: Squad | null;
   squadMembers?: SquadMember[];
@@ -55,7 +55,7 @@ const squadsSlice = createSlice({
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
     },
-    setStatus(state, action: PayloadAction<LoginStatusEnum>) {
+    setStatus(state, action: PayloadAction<QueryStatusEnum>) {
       state.status = action.payload;
     },
   },

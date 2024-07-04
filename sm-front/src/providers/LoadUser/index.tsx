@@ -1,13 +1,16 @@
 import { LoadingScreen } from '@/components/Loading';
 import { loadUserFromToken, logout, setAuthStatus } from '@/store/authSlice';
+import { paths } from '@/store/paths';
 import { useAppDispatch } from '@/store/useRedux';
-import { LoginStatusEnum, UserInterface } from '@/utils/types/index';
+import { QueryStatusEnum, UserInterface } from '@/utils/types/index';
 import jwt from 'jsonwebtoken';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const LoadUser = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -21,6 +24,7 @@ const LoadUser = () => {
         if (decodedToken.exp < currentTime) {
           localStorage.removeItem('token');
           dispatch(logout());
+          router.replace(paths.signIn);
         } else {
           dispatch(loadUserFromToken({ user: decodedToken, token }));
         }
@@ -31,7 +35,7 @@ const LoadUser = () => {
 
   useEffect(() => {
     if (!loading) {
-      dispatch(setAuthStatus(LoginStatusEnum.idle));
+      dispatch(setAuthStatus(QueryStatusEnum.idle));
     }
   }, [loading, dispatch]);
 

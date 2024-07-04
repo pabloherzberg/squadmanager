@@ -6,7 +6,7 @@ import {
   setUser,
 } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/useRedux';
-import { LoginStatusEnum, UserInterface } from '@/utils/types/index';
+import { QueryStatusEnum, UserInterface } from '@/utils/types/index';
 import jwt from 'jsonwebtoken';
 import { useMutation } from 'react-query';
 
@@ -27,16 +27,16 @@ export const useFetchAuth = () => {
     },
     {
       onMutate: () => {
-        dispatch(setAuthStatus(LoginStatusEnum.loading));
+        dispatch(setAuthStatus(QueryStatusEnum.loading));
       },
       onSuccess: (data) => {
         dispatch(setUser(data.user));
         dispatch(setToken(data.token));
-        dispatch(setAuthStatus(LoginStatusEnum.succeeded));
+        dispatch(setAuthStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {
         dispatch(setAuthError(error.message));
-        dispatch(setAuthStatus(LoginStatusEnum.failed));
+        dispatch(setAuthStatus(QueryStatusEnum.failed));
       },
     }
   );
@@ -57,14 +57,14 @@ export const useCreateUser = () => {
     },
     {
       onMutate: () => {
-        dispatch(setAuthStatus(LoginStatusEnum.loading));
+        dispatch(setAuthStatus(QueryStatusEnum.loading));
       },
       onSuccess: () => {
-        dispatch(setAuthStatus(LoginStatusEnum.succeeded));
+        dispatch(setAuthStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {
         dispatch(setAuthError(error.message));
-        dispatch(setAuthStatus(LoginStatusEnum.failed));
+        dispatch(setAuthStatus(QueryStatusEnum.failed));
       },
     }
   );

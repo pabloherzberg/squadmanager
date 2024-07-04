@@ -10,21 +10,21 @@ import {
   updateSquad,
 } from '@/store/squadSlice';
 import { useAppDispatch } from '@/store/useRedux';
-import { LoginStatusEnum, Squad } from '@/utils/types/index';
+import { QueryStatusEnum, Squad } from '@/utils/types/index';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export const useFetchSquads = () => {
   const dispatch = useAppDispatch();
   return useQuery('squads', async () => {
-    dispatch(setStatus(LoginStatusEnum.loading));
+    dispatch(setStatus(QueryStatusEnum.loading));
     try {
       const response = await api.get('/squad');
       dispatch(setSquads(response.data));
-      dispatch(setStatus(LoginStatusEnum.succeeded));
+      dispatch(setStatus(QueryStatusEnum.succeeded));
       return response.data;
     } catch (error: any) {
       dispatch(setError(error.message));
-      dispatch(setStatus(LoginStatusEnum.failed));
+      dispatch(setStatus(QueryStatusEnum.failed));
       throw error;
     }
   });
@@ -65,11 +65,11 @@ export const useUpdateSquad = () => {
       onSuccess: (data) => {
         dispatch(updateSquad(data));
         queryClient.invalidateQueries('squads');
-        dispatch(setStatus(LoginStatusEnum.succeeded));
+        dispatch(setStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {
         dispatch(setError(error.message));
-        dispatch(setStatus(LoginStatusEnum.failed));
+        dispatch(setStatus(QueryStatusEnum.failed));
       },
     }
   );
@@ -95,7 +95,7 @@ export const useDeleteSquad = () => {
 export const useGetSquad = (id: string) => {
   const dispatch = useAppDispatch();
   return useQuery(['squad', id], async () => {
-    dispatch(setStatus(LoginStatusEnum.loading));
+    dispatch(setStatus(QueryStatusEnum.loading));
     try {
       const response = await api.get(`/squad/${id}`);
       const data = {
@@ -104,11 +104,11 @@ export const useGetSquad = (id: string) => {
         users: response.data.users,
       };
       dispatch(setSquad(data));
-      dispatch(setStatus(LoginStatusEnum.succeeded));
+      dispatch(setStatus(QueryStatusEnum.succeeded));
       return data;
     } catch (error: any) {
       dispatch(setError(error.message));
-      dispatch(setStatus(LoginStatusEnum.failed));
+      dispatch(setStatus(QueryStatusEnum.failed));
       throw error;
     }
   });
@@ -130,11 +130,11 @@ export const useDeleteSquadMember = () => {
         const { squadId } = variables;
         queryClient.invalidateQueries(['squad', squadId]);
         dispatch(updateSquad(data));
-        dispatch(setStatus(LoginStatusEnum.succeeded));
+        dispatch(setStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {
         dispatch(setError(error.message));
-        dispatch(setStatus(LoginStatusEnum.failed));
+        dispatch(setStatus(QueryStatusEnum.failed));
       },
     }
   );
@@ -157,11 +157,11 @@ export const useAddSquadMember = () => {
         const { squadId } = variables;
         queryClient.invalidateQueries(['squad', squadId]);
         dispatch(updateSquad(data));
-        dispatch(setStatus(LoginStatusEnum.succeeded));
+        dispatch(setStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {
         dispatch(setError(error.message));
-        dispatch(setStatus(LoginStatusEnum.failed));
+        dispatch(setStatus(QueryStatusEnum.failed));
       },
     }
   );
@@ -169,15 +169,15 @@ export const useAddSquadMember = () => {
 export const useFetchUsers = () => {
   const dispatch = useAppDispatch();
   return useQuery('users', async () => {
-    dispatch(setStatus(LoginStatusEnum.loading));
+    dispatch(setStatus(QueryStatusEnum.loading));
     try {
       const response = await api.get('/users');
       dispatch(setUsers(response.data));
-      dispatch(setStatus(LoginStatusEnum.succeeded));
+      dispatch(setStatus(QueryStatusEnum.succeeded));
       return response.data;
     } catch (error: any) {
       dispatch(setError(error.message));
-      dispatch(setStatus(LoginStatusEnum.failed));
+      dispatch(setStatus(QueryStatusEnum.failed));
       throw error;
     }
   });

@@ -1,10 +1,10 @@
-import { LoginStatusEnum } from '@/utils/types/index';
+import { QueryStatusEnum } from '@/utils/types/index';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../hooks/api';
 
 const initialState = {
   employees: [],
-  status: LoginStatusEnum.idle,
+  status: QueryStatusEnum.idle,
   error: null as string | null | undefined,
 };
 
@@ -23,14 +23,14 @@ const employeeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchEmployees.pending, (state) => {
-        state.status = LoginStatusEnum.loading;
+        state.status = QueryStatusEnum.loading;
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
-        state.status = LoginStatusEnum.succeeded;
+        state.status = QueryStatusEnum.succeeded;
         state.employees = action.payload;
       })
       .addCase(fetchEmployees.rejected, (state, action) => {
-        state.status = LoginStatusEnum.failed;
+        state.status = QueryStatusEnum.failed;
         state.error = action.error.message;
       });
   },

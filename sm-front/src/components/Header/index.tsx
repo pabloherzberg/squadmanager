@@ -2,7 +2,7 @@ import { logout } from '@/store/authSlice';
 import { paths } from '@/store/paths';
 import { useAppDispatch, useAppSelector } from '@/store/useRedux';
 import Logo from '@/styles/assets/images/logo.svg';
-import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceWalletRounded';
+import { Work } from '@mui/icons-material/';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,12 +31,7 @@ export function Header() {
     {
       label: 'Squads',
       link: paths.squads,
-      icon: <AccountBalanceWalletRoundedIcon className="text-md" />,
-    },
-    {
-      label: 'Funcionários',
-      link: paths.manager,
-      icon: <AccountBalanceWalletRoundedIcon className="text-md" />,
+      icon: <Work className="text-md" />,
     },
   ];
   const [drawerOpen, setDrawerOpen] = useState(false);

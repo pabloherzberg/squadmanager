@@ -1,4 +1,4 @@
-export enum LoginStatusEnum {
+export enum QueryStatusEnum {
   loading = 'loading',
   succeeded = 'succeeded',
   failed = 'failed',
@@ -15,7 +15,7 @@ export interface UserInterface {
 
 export interface AuthStateInterface {
   user: UserInterface | null;
-  status: LoginStatusEnum;
+  status: QueryStatusEnum;
   error: string | null | undefined;
 }
 
@@ -29,7 +29,7 @@ export interface Squad {
 
 export interface SquadsState {
   squads: Squad[];
-  status: LoginStatusEnum;
+  status: QueryStatusEnum;
   error: string | null | undefined;
 }
 
@@ -46,4 +46,40 @@ export interface EmployeeInterface {
   email: string;
   role: string;
   createdat: string;
+}
+
+export enum TaskStatusEnum {
+  todo = 'todo',
+  doing = 'doing',
+  done = 'done',
+  blocked = 'blocked',
+}
+
+export interface Task {
+  taskid: number;
+  title: string;
+  description: string;
+  duedate: string;
+  assignedto: number;
+  assignedtoUsername: string;
+  squadid: number;
+  status: string;
+  createdat: string;
+}
+
+export interface User {
+  userid: number;
+  username: string;
+  email: string;
+  role: string;
+  createdat: string;
+}
+
+export interface TaskEvidence {
+  evidenceid: number;
+  taskid: number;
+  evidencepath: string | null;
+  description: string | null;
+  status: string | null;
+  uploadedat: string;
 }
