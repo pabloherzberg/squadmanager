@@ -32,14 +32,14 @@ export function Header() {
   const ManagerNavItems = [
     {
       label: 'Squads',
-      link: paths.squads,
+      link: paths.managerHome,
     },
   ];
 
   const EmployeeNavItems = [
     {
-      label: 'Tarefas',
-      link: paths.employee,
+      label: 'Squads',
+      link: paths.employeeHome,
     },
   ];
 

@@ -1,9 +1,8 @@
 export const paths = {
   signUp: '/sign-up',
   signIn: '/sign-in',
-  manager: '/manager/employees',
-  employee: '/employee',
-  squads: '/manager/squads',
+  employeeHome: '/employee/squads',
+  managerHome: '/manager/squads',
   squadsId: '/manager/squads/:id',
   squadsNewSquad: '/manager/squads/new-squad',
   squadsEditForm: '/manager/squads/:id/edit/form',

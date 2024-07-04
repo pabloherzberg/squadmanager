@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/store/useRedux';
-import { Squad } from '@/utils/types';
+import { Squad, UserRoleEnum } from '@/utils/types';
 import { Card, CardContent, Typography } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { commonColors } from '../../../tailwind.config';
@@ -10,17 +10,17 @@ interface SquadCardProps {
 }
 
 const SquadCard: React.FC<SquadCardProps> = ({ squad }) => {
+  const user = useAppSelector((state) => state.auth.user);
   const createdAt = new Date(squad.createdat).toLocaleDateString();
-  const userRole = useAppSelector((state) => state.auth.user?.role);
   const pathname = usePathname();
   const router = useRouter();
   return (
     <Card
       onClick={() =>
         router.push(
-          pathname.includes('edit')
+          user?.role === UserRoleEnum.manager
             ? `/manager/squads/${squad.squadid}/edit/form`
-            : `/manager/squads/${squad.squadid}/edit`
+            : `/employee/squads/${squad.squadid}/`
         )
       }
       className={`bg-gray-50 shadow-lg rounded-lg overflow-hidden cursor-pointer hover:bg-blue-200 hover:shadow-2xl transition duration-200`}

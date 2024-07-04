@@ -1,6 +1,6 @@
 import { LoadingScreen } from '@/components/Loading';
 import SquadCard from '@/components/SquadCard';
-import TaskList from '@/components/TaskList';
+import TasksManager from '@/components/TaskManager';
 import { useGetSquad } from '@/hooks/squad';
 import PrivateRoute from '@/providers/PrivateRoute';
 import { useAppSelector } from '@/store/useRedux';
@@ -78,7 +78,7 @@ const SquadForm: React.FC = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <TaskList />
+        <TasksManager />
       </Grid>
     </Box>
   );

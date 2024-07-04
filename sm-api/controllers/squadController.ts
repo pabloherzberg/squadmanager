@@ -116,7 +116,25 @@ export const getAllSquads = async (
   res: Response
 ) => {
   try {
-    const squads = await Squad.findAll();
+    const role = (req.user as JwtPayload).role;
+    const id = (req.user as JwtPayload).id;
+
+    let squads;
+
+    console.log(role);
+    console.log(id);
+    if (role === RoleType.Employee) {
+      const squadMembers = await SquadMember.findAll({
+        where: { userid: id },
+      });
+
+      const squadIds = squadMembers.map((member) => member.squadid);
+
+      squads = await Squad.findAll({ where: { squadid: squadIds } });
+    } else {
+      squads = await Squad.findAll();
+    }
+
     res.json(squads);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });

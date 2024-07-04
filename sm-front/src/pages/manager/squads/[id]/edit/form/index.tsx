@@ -16,6 +16,7 @@ const EditSquadForm: React.FC = () => {
         <Grid item xs={12}>
           <SquadMemberList />
         </Grid>
+
         <Grid item xs={12}>
           <AddMemberForm />
         </Grid>

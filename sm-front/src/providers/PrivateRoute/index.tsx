@@ -1,7 +1,7 @@
 import { LoadingScreen } from '@/components/Loading';
 import { loadUserFromToken, logout, setAuthStatus } from '@/store/authSlice';
 import { paths } from '@/store/paths';
-import { useAppDispatch, useAppSelector } from '@/store/useRedux';
+import { useAppDispatch } from '@/store/useRedux';
 import { QueryStatusEnum, UserInterface } from '@/utils/types/index';
 import jwt from 'jsonwebtoken';
 import { useRouter } from 'next/router';
@@ -12,7 +12,6 @@ const PrivateRoute = (WrappedComponent: React.ComponentType) => {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const authSelector = useAppSelector((state) => state.auth);
 
     useEffect(() => {
       const validateToken = (token: string | null | undefined) => {

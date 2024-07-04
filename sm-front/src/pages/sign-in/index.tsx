@@ -32,7 +32,9 @@ const LoginPage = () => {
   useEffect(() => {
     if (auth.token) {
       router.replace(
-        auth.user?.role === UserRoleEnum.manager ? paths.squads : paths.employee
+        auth.user?.role === UserRoleEnum.manager
+          ? paths.managerHome
+          : paths.employeeHome
       );
     }
   }, [router, auth.token, auth.status]);
