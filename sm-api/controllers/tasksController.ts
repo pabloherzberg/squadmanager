@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Task } from "../models/task";
 import { TaskEvidence } from "../models/taskEvidence";
+import { User } from "../models/user";
 
 /**
  * @swagger
@@ -109,8 +110,20 @@ export const getTaskById = async (req: Request, res: Response) => {
  */
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
-    const tasks = await Task.findAll();
-    res.json(tasks);
+    const tasks = await Task.findAll<any>();
+    const users = await User.findAll<any>();
+
+    const userMap: { [key: number]: string } = users.reduce((acc, user) => {
+      acc[user.userid] = user.username;
+      return acc;
+    }, {} as { [key: number]: string });
+
+    const updatedTasks = tasks.map((task) => ({
+      ...task.toJSON(),
+      assignedtoUsername: userMap[task.assignedto] || task.assignedto,
+    }));
+
+    res.json(updatedTasks);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });
   }
@@ -149,7 +162,7 @@ export const getAllTasks = async (req: Request, res: Response) => {
  *                 type: number
  *               status:
  *                 type: string
- *                 enum: ["Pendente", "Em Progresso", "Concluído"]
+ *                 enum: ["todo", "doing", "done", "blocked"]
  *     responses:
  *       200:
  *         description: Tarefa atualizada com sucesso
@@ -218,6 +231,13 @@ export const deleteTask = async (req: Request, res: Response) => {
  *   post:
  *     summary: Adicionar evidência à tarefa
  *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID da tarefa
  *     requestBody:
  *       required: true
  *       content:
@@ -225,13 +245,16 @@ export const deleteTask = async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             required:
- *               - taskid
  *               - evidencepath
  *             properties:
- *               taskid:
- *                 type: number
  *               evidencepath:
  *                 type: string
+ *               description:
+ *                 type: string
+ *                 nullable: true
+ *               status:
+ *                 type: string
+ *                 nullable: true
  *     responses:
  *       201:
  *         description: Evidência adicionada com sucesso
@@ -240,8 +263,19 @@ export const deleteTask = async (req: Request, res: Response) => {
  */
 export const addTaskEvidence = async (req: Request, res: Response) => {
   try {
-    const { taskid, evidencepath } = req.body;
-    const taskEvidence = await TaskEvidence.create({ taskid, evidencepath });
+    const { id } = req.params;
+    const { evidencepath, description, status } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: "Task ID is required." });
+    }
+
+    const taskEvidence = await TaskEvidence.create({
+      taskid: Number(id),
+      evidencepath,
+      description,
+      status,
+    });
     res.status(201).json(taskEvidence);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });
@@ -269,7 +303,9 @@ export const addTaskEvidence = async (req: Request, res: Response) => {
  */
 export const getTaskEvidenceById = async (req: Request, res: Response) => {
   try {
-    const taskEvidence = await TaskEvidence.findByPk(req.params.id);
+    const taskEvidence = await TaskEvidence.findAll({
+      where: { taskid: req.params.id },
+    });
     if (!taskEvidence)
       return res
         .status(404)

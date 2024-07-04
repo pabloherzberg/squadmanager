@@ -9,7 +9,7 @@ interface TaskEvidenceAttributes {
   description?: string;
   status?:
     | TaskStatus.doing
-    | TaskStatus.pending
+    | TaskStatus.todo
     | TaskStatus.done
     | TaskStatus.blocked;
   uploadedat?: Date;
@@ -58,6 +58,7 @@ TaskEvidence.init(
   },
   {
     sequelize,
-    tableName: "tasksevidence",
+    timestamps: false,
+    tableName: "taskevidence",
   }
 );

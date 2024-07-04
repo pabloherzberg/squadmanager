@@ -9,7 +9,11 @@ interface TaskAttributes {
   duedate: Date;
   assignedto: number;
   squadid: number;
-  status: TaskStatus.pending | TaskStatus.doing | TaskStatus.done;
+  status:
+    | TaskStatus.todo
+    | TaskStatus.doing
+    | TaskStatus.done
+    | TaskStatus.blocked;
   createdat?: Date;
 }
 
@@ -25,7 +29,11 @@ export class Task
   public duedate!: Date;
   public assignedto!: number;
   public squadid!: number;
-  public status!: TaskStatus.pending | TaskStatus.doing | TaskStatus.done;
+  public status!:
+    | TaskStatus.todo
+    | TaskStatus.doing
+    | TaskStatus.done
+    | TaskStatus.blocked;
   public createdat?: Date;
 }
 
@@ -67,6 +75,7 @@ Task.init(
   },
   {
     sequelize,
+    timestamps: false,
     tableName: "tasks",
   }
 );

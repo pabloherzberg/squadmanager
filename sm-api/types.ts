@@ -11,7 +11,7 @@ export enum RoleType {
 }
 
 export enum TaskStatus {
-  pending = "pending",
+  todo = "to-do",
   doing = "doing",
   done = "done",
   blocked = "blocked",
