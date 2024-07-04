@@ -21,7 +21,7 @@ export interface AuthStateInterface {
 
 export interface Squad {
   createdat: string;
-  createdby: string;
+  createdby: number;
   description: string;
   name: string;
   squadid: number;

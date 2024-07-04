@@ -79,9 +79,9 @@ export const useDeleteSquad = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (id: number) => {
-      await api.delete(`/squad/${id}`);
-      return id;
+    async (squad: Squad) => {
+      await api.delete(`/squad/${squad.squadid}`);
+      return squad.squadid;
     },
     {
       onSuccess: (id) => {

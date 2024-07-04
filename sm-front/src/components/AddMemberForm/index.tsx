@@ -20,10 +20,9 @@ const AddMemberForm: React.FC = () => {
     userId: number;
   }>({ name: '', userId: 0 });
   const { refetch } = useGetSquad(squadSelector.squad.squadid);
-
   const { mutate: addSquadMember, status } = useAddSquadMember();
-
   const toast = useToast();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addSquadMember(
@@ -38,7 +37,7 @@ const AddMemberForm: React.FC = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mb: 3 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom>
         Adicionar Membro
       </Typography>
@@ -68,7 +67,7 @@ const AddMemberForm: React.FC = () => {
         type="submit"
         variant="contained"
         color="primary"
-        sx={{ mb: 2 }}
+        sx={{ mt: 2 }}
         disabled={status === 'loading' || !selectedUser.userId}
       >
         {status === 'loading' ? 'Adicionando...' : 'Adicionar Membro'}

@@ -19,7 +19,7 @@ interface SquadState {
   squads?: Squad[];
   status?: QueryStatusEnum;
   error?: string | null | undefined;
-  squad: Squad | null;
+  squad: Squad;
   squadMembers?: SquadMember[];
   users?: UserInterface[];
 }

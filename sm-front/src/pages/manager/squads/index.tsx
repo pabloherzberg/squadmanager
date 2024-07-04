@@ -26,15 +26,8 @@ const Form = () => {
     return <div>Failed to load squads</div>;
   }
 
-  const ButtonNewSquad = () => {
-    return (
-      <Button
-        onClick={() => router.push(paths.squadsNewSquad)}
-        className={`h-full w-full bg-gray-50 shadow-lg rounded-lg overflow-hidden cursor-pointer flex justify-center items-center h-full hover:${commonColors.blue[200]} hover:shadow-2xl transition duration-200`}
-      >
-        <Typography>Criar nova Squad</Typography>
-      </Button>
-    );
+  const handleNewSquadClick = () => {
+    router.push(paths.squadsNewSquad);
   };
 
   return (
@@ -46,8 +39,13 @@ const Form = () => {
             <SquadCard squad={squad} />
           </Grid>
         ))}
-        <Grid container item xs={12} sm={6} md={4} lg={3}>
-          <ButtonNewSquad />
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Button
+            onClick={handleNewSquadClick}
+            className={`h-full w-full bg-gray-50 shadow-lg rounded-lg overflow-hidden cursor-pointer flex justify-center items-center h-full hover:${commonColors.blue[200]} hover:shadow-2xl transition duration-200`}
+          >
+            <Typography>Criar nova Squad</Typography>
+          </Button>
         </Grid>
       </Grid>
     </div>
