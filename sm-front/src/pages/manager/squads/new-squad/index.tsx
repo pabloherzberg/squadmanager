@@ -1,5 +1,6 @@
 import SquadFormBase from '@/components/SquadFormBase';
 import { useCreateSquad } from '@/hooks/squad';
+import PrivateRoute from '@/providers/PrivateRoute';
 import { useToast } from '@/providers/ToastProvider';
 import { paths } from '@/store/paths';
 import { QueryStatusEnum } from '@/utils/types';
@@ -49,4 +50,4 @@ const NewSquadForm: React.FC = () => {
   );
 };
 
-export default NewSquadForm;
+export default PrivateRoute(NewSquadForm);

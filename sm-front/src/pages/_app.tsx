@@ -3,7 +3,6 @@ import queryClient from '@/providers/QueryClient';
 import ToastContextProvider from '@/providers/ToastProvider';
 import store from '@/store';
 
-import LoadUser from '@/providers/LoadUser';
 import { persistor } from '@/store/index';
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@mui/material/styles';
@@ -34,7 +33,6 @@ function App({
           <DefaultLayout>
             <ThemeProvider theme={theme}>
               <ToastContextProvider>
-                <LoadUser />
                 <Component {...pageProps} />
               </ToastContextProvider>
             </ThemeProvider>

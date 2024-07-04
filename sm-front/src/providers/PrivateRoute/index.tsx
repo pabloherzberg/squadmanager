@@ -15,9 +15,7 @@ const PrivateRoute = (WrappedComponent: React.ComponentType) => {
     const authSelector = useAppSelector((state) => state.auth);
 
     useEffect(() => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token') || authSelector.token;
-        console.log('token', token);
+      const validateToken = (token: string | null | undefined) => {
         if (token) {
           const decodedToken = jwt.decode(token) as UserInterface & {
             exp: number;
@@ -31,10 +29,20 @@ const PrivateRoute = (WrappedComponent: React.ComponentType) => {
           } else {
             dispatch(loadUserFromToken({ user: decodedToken, token }));
           }
+        } else {
+          dispatch(logout());
+          router.replace(paths.signIn);
         }
         setLoading(false);
+      };
+
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        validateToken(token);
+      } else {
+        setLoading(false);
       }
-    }, [dispatch, authSelector.token]);
+    }, [dispatch, router]);
 
     useEffect(() => {
       if (!loading) {

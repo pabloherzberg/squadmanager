@@ -23,7 +23,6 @@ import { useState } from 'react';
 
 export function Header() {
   const dispatch = useAppDispatch();
-  const home = usePathname();
   const selector = useAppSelector((state) => state.auth);
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -48,6 +47,12 @@ export function Header() {
     selector.user?.role === UserRoleEnum.manager
       ? ManagerNavItems
       : EmployeeNavItems;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.replace(paths.signIn);
+  };
+
   return (
     <div>
       <header className="shadow-[0_2px_4px_0_rgb(0,0,0,0.2)] h-14 flex items-center">
@@ -61,7 +66,7 @@ export function Header() {
           {selector.token && (
             <div className="flex items-center gap-2 cursor-pointer text-primary">
               <LogoutIcon />
-              <div onClick={() => dispatch(logout())}>Sair</div>
+              <div onClick={handleLogout}>Sair</div>
             </div>
           )}
         </div>

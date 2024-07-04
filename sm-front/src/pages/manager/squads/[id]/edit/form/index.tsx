@@ -2,10 +2,11 @@ import AddMemberForm from '@/components/AddMemberForm';
 import DeleteActionButton from '@/components/DeleteActionButton';
 import SquadForm from '@/components/SquadForm';
 import SquadMemberList from '@/components/SquadMemeberList';
+import PrivateRoute from '@/providers/PrivateRoute';
 import { Container, Grid } from '@mui/material';
 import React from 'react';
 
-const NewSquadForm: React.FC = () => {
+const EditSquadForm: React.FC = () => {
   return (
     <Container maxWidth="lg">
       <Grid container spacing={2}>
@@ -26,4 +27,4 @@ const NewSquadForm: React.FC = () => {
   );
 };
 
-export default NewSquadForm;
+export default PrivateRoute(EditSquadForm);
