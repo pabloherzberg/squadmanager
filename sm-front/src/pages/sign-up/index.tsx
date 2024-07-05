@@ -89,11 +89,9 @@ const SignupPage = () => {
   };
 
   return (
-    <main className=" bg-gray-50 flex flex-col justify-center  sm:px-6 lg:px-8">
+    <main className="bg-blue-200 flex flex-col justify-center sm:p-6 lg:p-10 h-full">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <H2 className="mt-6 text-center text-3xl  text-gray-900">
-          Crie sua conta
-        </H2>
+        <H2 className=" text-center text-3xl  text-gray-900">Crie sua conta</H2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">

@@ -65,7 +65,7 @@ Task.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("to-do", "doing", "done", "blocked"),
+      type: DataTypes.ENUM("todo", "doing", "done", "blocked"),
       allowNull: false,
     },
     createdat: {

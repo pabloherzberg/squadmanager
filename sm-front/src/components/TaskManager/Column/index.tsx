@@ -28,7 +28,7 @@ const Column: React.FC<ColumnProps> = ({
 }) => {
   const handleColumnTitle = (columnName: string): string => {
     switch (columnName) {
-      case 'to-do':
+      case 'todo':
         return 'A fazer';
       case 'doing':
         return 'Fazendo';

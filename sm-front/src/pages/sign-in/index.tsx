@@ -61,9 +61,9 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="bg-gray-50 flex flex-col justify-center  sm:px-6 lg:px-8">
+    <main className="bg-blue-200 flex flex-col justify-center p-10 sm:px-6 lg:px-8 h-full">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <H2 className="mt-6 text-center text-3xl  text-gray-900">
+        <H2 className="text-center text-3xl  text-gray-900">
           Entre na sua conta
         </H2>
       </div>

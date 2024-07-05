@@ -54,7 +54,7 @@ export interface EmployeeInterface {
 }
 
 export enum TaskStatusEnum {
-  todo = 'to-do',
+  todo = 'todo',
   doing = 'doing',
   done = 'done',
   blocked = 'blocked',

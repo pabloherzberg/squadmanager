@@ -5,7 +5,7 @@ export const DefaultLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <div className="flex-grow overflow-auto px-4 sm:px-6 lg:px-10 mt-14">
+      <div className="flex-grow overflow-auto p-4 sm:p-6 lg:p-10">
         {children}
       </div>
     </div>
