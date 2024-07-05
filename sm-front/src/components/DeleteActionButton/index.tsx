@@ -26,7 +26,7 @@ const DeleteActionButton: React.FC = () => {
     deleteSquad(squadSelector, {
       onSuccess: () => {
         toast.success({ content: 'Squad deletada com sucesso' });
-        router.push(paths.squads);
+        router.push(paths.managerHome);
       },
       onError: () => {
         toast.error({ content: 'Erro ao deletar squad' });
