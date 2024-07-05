@@ -90,12 +90,12 @@ const SignupPage = () => {
 
   return (
     <main className="bg-blue-200 flex flex-col justify-center sm:p-6 lg:p-10 h-full">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <H2 className=" text-center text-3xl  text-gray-900">Crie sua conta</H2>
-      </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
+      <H2 className=" text-center text-3xl  text-gray-900 mb-4">
+        Crie sua conta
+      </H2>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md px-4">
+        <div className="bg-white py-4 px-4 shadow sm:rounded-lg sm:px-10">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               variant="outlined"
               fullWidth

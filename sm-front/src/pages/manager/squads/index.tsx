@@ -4,7 +4,7 @@ import { useFetchSquads } from '@/hooks/squad/index';
 import PrivateRoute from '@/providers/PrivateRoute';
 import { paths } from '@/store/paths';
 import { useAppSelector } from '@/store/useRedux';
-import { Button, Grid, Typography } from '@mui/material';
+import { Alert, Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { commonColors } from '../../../../tailwind.config';
 
@@ -34,6 +34,11 @@ const Form = () => {
     <div className="p-4">
       <h1 className="text-3xl mb-6">Squads</h1>
       <Grid container spacing={4}>
+        {!squads.length && (
+          <Alert severity="info" className="w-full mt-10">
+            Você ainda não criou nenhuma Squad.
+          </Alert>
+        )}
         {squads.map((squad: any) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={squad.squadid}>
             <SquadCard squad={squad} />

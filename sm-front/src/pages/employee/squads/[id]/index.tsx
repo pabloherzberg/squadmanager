@@ -93,7 +93,9 @@ const SquadForm: React.FC = () => {
           assignedTo={authSelector.user?.id}
         />
       </Grid>
+
       <Grid item xs={12}>
+        <Typography variant="h6">Arraste as tarefas desejadas</Typography>
         <TasksManager />
       </Grid>
     </Box>

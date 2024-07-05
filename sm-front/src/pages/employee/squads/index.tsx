@@ -3,7 +3,7 @@ import SquadCard from '@/components/SquadCard';
 import { useFetchSquads } from '@/hooks/squad/index';
 import PrivateRoute from '@/providers/PrivateRoute';
 import { useAppSelector } from '@/store/useRedux';
-import { Grid } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 
 const Form = () => {
   const { status } = useFetchSquads();
@@ -26,6 +26,11 @@ const Form = () => {
     <div className="p-4">
       <h1 className="text-3xl mb-6">Squads</h1>
       <Grid container spacing={4}>
+        {!squads.length && (
+          <Alert severity="info" className="w-full mt-10">
+            Você não faz parte de nenhuma Squad. Verifique com o seu Gerente.
+          </Alert>
+        )}
         {squads.map((squad: any) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={squad.squadid}>
             <SquadCard squad={squad} />
