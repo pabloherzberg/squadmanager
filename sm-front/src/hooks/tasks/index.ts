@@ -24,6 +24,14 @@ export interface AddEvidenceParams {
   };
 }
 
+export interface CreateTaskParams {
+  title: string;
+  description: string;
+  duedate: string;
+  squadid: number;
+  status: string;
+}
+
 export const useUpdateTask = () => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.task.tasks);
@@ -129,6 +137,36 @@ export const useAddTaskEvidence = () => {
           newEvidence.taskid,
         ]);
         dispatch(addTaskEvidence(newEvidence));
+        dispatch(setTasksStatus(QueryStatusEnum.succeeded));
+      },
+      onError: (error: any) => {
+        dispatch(setTasksError(error.message));
+        dispatch(setTasksStatus(QueryStatusEnum.failed));
+      },
+      onSettled: () => {
+        dispatch(setTasksStatus(QueryStatusEnum.idle));
+      },
+    }
+  );
+};
+
+export const useCreateTask = () => {
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) => state.task.tasks);
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async (taskData: CreateTaskParams) => {
+      const response = await api.post('/tasks', taskData);
+      return response.data as Task;
+    },
+    {
+      onMutate: () => {
+        dispatch(setTasksStatus(QueryStatusEnum.loading));
+      },
+      onSuccess: (newTask) => {
+        queryClient.invalidateQueries('fetchTasks');
+        dispatch(setTasks([...tasks, newTask]));
         dispatch(setTasksStatus(QueryStatusEnum.succeeded));
       },
       onError: (error: any) => {

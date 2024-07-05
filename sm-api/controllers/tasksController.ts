@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { JwtPayload } from "jsonwebtoken";
+import { CustomMiddlewareBodyRequest } from "types";
 import { Task } from "../models/task";
 import { TaskEvidence } from "../models/taskEvidence";
 import { User } from "../models/user";
@@ -25,7 +27,6 @@ import { User } from "../models/user";
  *               - title
  *               - description
  *               - duedate
- *               - assignedto
  *               - squadid
  *               - status
  *             properties:
@@ -36,8 +37,6 @@ import { User } from "../models/user";
  *               duedate:
  *                 type: string
  *                 format: date-time
- *               assignedto:
- *                 type: number
  *               squadid:
  *                 type: number
  *               status:
@@ -49,10 +48,13 @@ import { User } from "../models/user";
  *       400:
  *         description: Erro na requisição
  */
-export const createTask = async (req: Request, res: Response) => {
+export const createTask = async (
+  req: CustomMiddlewareBodyRequest,
+  res: Response
+) => {
   try {
-    const { title, description, duedate, assignedto, squadid, status } =
-      req.body;
+    const { title, description, duedate, squadid, status } = req.body;
+    const assignedto = (req.user as JwtPayload).id;
     const task = await Task.create({
       title,
       description,
@@ -61,6 +63,7 @@ export const createTask = async (req: Request, res: Response) => {
       squadid,
       status,
     });
+
     res.status(201).json(task);
   } catch (error) {
     res.status(400).json({ error: (error as any).message });

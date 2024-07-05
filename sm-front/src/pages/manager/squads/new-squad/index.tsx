@@ -31,7 +31,7 @@ const NewSquadForm: React.FC = () => {
     try {
       await createSquad({ name: values.name, description: values.description });
       toast.success({ content: 'Squad criada com sucesso' });
-      router.push(paths.squads);
+      router.push(paths.managerHome);
     } catch (error) {
       toast.error({ content: 'Erro ao criar squad' });
     }

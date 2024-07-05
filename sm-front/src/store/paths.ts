@@ -8,4 +8,5 @@ export const paths = {
   squadsEditForm: '/manager/squads/:id/edit/form',
   squadEdit: '/manager/squads/:id/edit',
   task: 'task-detail',
+  taskDetail: (id: string) => `/task-detail/${id}`,
 };

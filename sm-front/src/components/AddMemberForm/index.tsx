@@ -9,10 +9,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const AddMemberForm: React.FC = () => {
+  const { id } = useParams();
   const { status: usersStatus } = useFetchUsers();
+  const { status: squadStatus } = useGetSquad(String(id));
   const users = useAppSelector((state) => state.auth.users);
   const squadSelector = useAppSelector((state) => state.squad);
   const [selectedUser, setSelectedUser] = useState<{

@@ -1,5 +1,6 @@
 import { LoadingScreen } from '@/components/Loading';
 import SquadCard from '@/components/SquadCard';
+import TaskDialog from '@/components/TaskDialog';
 import TasksManager from '@/components/TaskManager';
 import { useGetSquad } from '@/hooks/squad';
 import PrivateRoute from '@/providers/PrivateRoute';
@@ -8,6 +9,7 @@ import { EmployeeInterface, SquadMember, UserRoleEnum } from '@/utils/types';
 import { Edit } from '@mui/icons-material';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Grid,
@@ -17,18 +19,17 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 const SquadForm: React.FC = () => {
-  const { id } = useParams();
   const router = useRouter();
+  const { id } = router.query;
+  const authSelector = useAppSelector((state) => state.auth);
   const squadSelector = useAppSelector((state) => state.squad);
-  const userRole = useAppSelector((state) => state.auth.user?.role);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const { status } = useGetSquad(String(id));
 
-  if (id) {
-    useGetSquad(String(id));
-  }
   if (!squadSelector.squad) {
     return <LoadingScreen />;
   }
@@ -37,7 +38,7 @@ const SquadForm: React.FC = () => {
     <Box className="p-4">
       <Box className="flex justify-between items-center mb-6">
         <Typography variant="h3">Squad Details</Typography>
-        {userRole === UserRoleEnum.manager && (
+        {authSelector.user?.role === UserRoleEnum.manager && (
           <IconButton
             aria-label="edit squad"
             onClick={() => router.push(`/manager/squads/${id}/edit/form`)}
@@ -76,6 +77,21 @@ const SquadForm: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
+      </Grid>
+      <Grid item xs={12} paddingBottom={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setDialogOpen(true)}
+        >
+          Criar Nova Task
+        </Button>
+        <TaskDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          squadId={Number(id)}
+          assignedTo={authSelector.user?.id}
+        />
       </Grid>
       <Grid item xs={12}>
         <TasksManager />

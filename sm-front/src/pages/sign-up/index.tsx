@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface LoginData {
   email: string;
@@ -43,14 +43,6 @@ const SignupPage = () => {
   const toast = useToast();
   const router = useRouter();
   const { mutateAsync } = useCreateUser();
-
-  useEffect(() => {
-    if (selector.status === QueryStatusEnum.succeeded) {
-      router.push('/sign-in');
-    } else if (selector.status === QueryStatusEnum.failed) {
-      toast.error({ content: 'E-mail ou senha inválidos' });
-    }
-  }, [selector.status, router]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -80,12 +72,20 @@ const SignupPage = () => {
       return;
     }
 
-    mutateAsync({
-      Email: inputValues.email,
-      Password: inputValues.password,
-      Username: inputValues.username,
-      Role: inputValues.role,
-    });
+    mutateAsync(
+      {
+        Email: inputValues.email,
+        Password: inputValues.password,
+        Username: inputValues.username,
+        Role: inputValues.role,
+      },
+      {
+        onSuccess: () => {
+          toast.success({ content: 'Usuário criado com sucesso' });
+          router.push('/sign-in');
+        },
+      }
+    );
   };
 
   return (

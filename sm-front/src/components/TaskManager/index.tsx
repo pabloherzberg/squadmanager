@@ -1,27 +1,67 @@
 import { useFetchTasks, useUpdateTask } from '@/hooks/tasks';
-import useColumns from '@/hooks/tasks/useColumns';
 import { useAppSelector } from '@/store/useRedux';
-import { QueryStatusEnum, Task } from '@/utils/types';
+import { QueryStatusEnum, Task, TaskStatusEnum } from '@/utils/types';
 import { Grid } from '@mui/material';
-import { useParams } from 'next/navigation';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { LoadingScreen } from '../Loading';
 import Column from './Column';
 
+interface Column {
+  name: TaskStatusEnum;
+  items: Task[];
+}
+
+interface Columns {
+  todo: Column;
+  doing: Column;
+  done: Column;
+}
+
 const TasksManager: React.FC = () => {
   const { status } = useFetchTasks();
-  const { id } = useParams();
+  const router = useRouter();
+  const { id } = router.query;
+
   const tasksSelector = useAppSelector((state) => state.task);
-  const filteredTasks = tasksSelector.tasks.filter(
-    (task) => task.squadid === Number(id)
+
+  const createInitialColumns = (tasks: Task[]): Columns => {
+    return {
+      todo: {
+        name: TaskStatusEnum.todo,
+        items: tasks.filter((task) => task.status === TaskStatusEnum.todo),
+      },
+      doing: {
+        name: TaskStatusEnum.doing,
+        items: tasks.filter((task) => task.status === TaskStatusEnum.doing),
+      },
+      done: {
+        name: TaskStatusEnum.done,
+        items: tasks.filter((task) => task.status === TaskStatusEnum.done),
+      },
+    };
+  };
+
+  const [columns, setColumns] = useState<Columns>(() =>
+    createInitialColumns([])
   );
 
-  const [columns, setColumns] = useColumns(filteredTasks);
+  useEffect(() => {
+    if (id && tasksSelector.tasks.length > 0) {
+      const filteredTasks = tasksSelector.tasks.filter(
+        (task: Task) => task.squadid === Number(id)
+      );
+      console.log(filteredTasks);
+      setColumns(createInitialColumns(filteredTasks));
+    }
+  }, [id, tasksSelector.tasks]);
+
+  console.log(columns);
 
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
     item: Task,
-    sourceCol: string
+    sourceCol: keyof Columns
   ) => {
     e.dataTransfer.setData('item', JSON.stringify(item));
     e.dataTransfer.setData('sourceCol', sourceCol);
@@ -29,9 +69,12 @@ const TasksManager: React.FC = () => {
 
   const { mutateAsync } = useUpdateTask();
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, destCol: string) => {
+  const handleDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    destCol: keyof Columns
+  ) => {
     const item = JSON.parse(e.dataTransfer.getData('item')) as Task;
-    const sourceCol = e.dataTransfer.getData('sourceCol');
+    const sourceCol = e.dataTransfer.getData('sourceCol') as keyof Columns;
     if (sourceCol !== destCol) {
       const sourceItems = columns[sourceCol].items.filter(
         (i) => i.taskid !== item.taskid
@@ -46,8 +89,6 @@ const TasksManager: React.FC = () => {
         [sourceCol]: { ...columns[sourceCol], items: sourceItems },
         [destCol]: { ...columns[destCol], items: destItems },
       });
-
-      const dueDate = new Date().toLocaleDateString();
 
       mutateAsync({
         id: item.taskid,
@@ -65,9 +106,16 @@ const TasksManager: React.FC = () => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={4}>
       {Object.entries(columns).map(([columnId, column]) => (
-        <Grid item xs={12} sm={6} md={4} key={columnId}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          key={columnId}
+          style={{ display: 'flex', flexDirection: 'column' }}
+        >
           <Column
             columnId={columnId}
             column={column}

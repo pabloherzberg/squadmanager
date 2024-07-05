@@ -12,10 +12,10 @@ interface ColumnProps {
   };
   handleDragStart: (
     e: React.DragEvent<HTMLDivElement>,
-    item: Task,
-    columnId: string
+    item: any,
+    columnId: any
   ) => void;
-  handleDrop: (e: React.DragEvent<HTMLDivElement>, destCol: string) => void;
+  handleDrop: (e: React.DragEvent<HTMLDivElement>, destCol: any) => void;
   handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
@@ -28,7 +28,7 @@ const Column: React.FC<ColumnProps> = ({
 }) => {
   const handleColumnTitle = (columnName: string): string => {
     switch (columnName) {
-      case 'todo':
+      case 'to-do':
         return 'A fazer';
       case 'doing':
         return 'Fazendo';

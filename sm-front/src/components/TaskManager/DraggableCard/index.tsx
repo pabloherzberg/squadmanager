@@ -26,7 +26,7 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
       key={item.taskid}
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      onClick={() => router.push(`${paths.task}/${item.taskid}`)}
+      onClick={() => router.replace(paths.taskDetail(String(item.taskid)))}
       className="user-select-none m-0 mb-2"
       sx={{ backgroundColor: commonColors.blue[200] }}
     >
