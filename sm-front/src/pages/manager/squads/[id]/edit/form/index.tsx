@@ -1,3 +1,4 @@
+'use client';
 import AddMemberForm from '@/components/AddMemberForm';
 import DeleteActionButton from '@/components/DeleteActionButton';
 import SquadForm from '@/components/SquadForm';

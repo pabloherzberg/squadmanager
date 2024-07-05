@@ -1,3 +1,4 @@
+'use client';
 import { LoadingScreen } from '@/components/Loading';
 import SquadCard from '@/components/SquadCard';
 import { useFetchSquads } from '@/hooks/squad/index';

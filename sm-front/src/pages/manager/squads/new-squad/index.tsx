@@ -1,3 +1,4 @@
+'use client';
 import SquadFormBase from '@/components/SquadFormBase';
 import { useCreateSquad } from '@/hooks/squad';
 import PrivateRoute from '@/providers/PrivateRoute';
